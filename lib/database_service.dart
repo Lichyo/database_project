@@ -58,9 +58,28 @@ class DatabaseService {
     );
   }
 
-  Future<void> getLessonFromWeb() async{
+  Future<void> _getLessonFromWeb() async {
     var courseFromWeb = await get(Uri.parse(
         'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
     var data = jsonDecode(courseFromWeb.body);
+  }
+
+  Future<void> writeCoursesIntoDatabase({required List<Course> courses}) async {
+    // INSERT INTO course(course_name, teacher, week, time, classroom)
+    // VALUES ('工程數學', '王富祥', '四', '01~03', 'C631');
+    // courses = [];
+    // courses.add(
+    //   Course(
+    //       name: '工程數學',
+    //       teacher: '王富祥',
+    //       classroom: 'C631',
+    //       time: '01~03',
+    //       week: '四'),
+    // );
+    for (Course course in courses) {
+      _conn!.execute(
+          "INSERT INTO course(course_name, teacher, week, time, classroom)"
+          "VALUES ('${course.name}', '${course.teacher}', '${course.week}', '${course.time}', '${course.classroom}');");
+    }
   }
 }
