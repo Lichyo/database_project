@@ -1,6 +1,8 @@
 import 'package:postgres/postgres.dart';
 import 'model/course.dart';
 import 'model/student.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class DatabaseService {
   Connection? _conn;
@@ -24,17 +26,15 @@ class DatabaseService {
   Future<List<Course>> getCourse() async {
     List<Course> courses = [];
     final result = await _conn!.execute(
-        'SELECT id, teacher, classroom, time, week, name FROM COURSE WHERE SID = ${_student!.ID}');
+        'SELECT name, teacher, classroom, time, week FROM COURSE WHERE SID = ${_student!.ID}');
     for (var course in result) {
-      String id = course[0] as String;
+      String name = course[0] as String;
       String teacher = course[1] as String;
       String classroom = course[2] as String;
       String time = course[3] as String;
       String week = course[4] as String;
-      String name = course[5] as String;
       courses.add(
         Course(
-          id: id,
           name: name,
           teacher: teacher,
           classroom: classroom,
@@ -56,5 +56,11 @@ class DatabaseService {
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
+  }
+
+  Future<void> getLessonFromWeb() async{
+    var courseFromWeb = await get(Uri.parse(
+        'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
+    var data = jsonDecode(courseFromWeb.body);
   }
 }
