@@ -6,6 +6,7 @@ import 'package:database_project/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:database_project/components/rounded_button.dart';
+import 'package:database_project/model/course.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -96,10 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                     await DatabaseService.login(
                         ID: int.parse(ID), password: password);
                     if (DatabaseService.isUserLogin) {
+                      print('${DatabaseService.student!.name} is login');
+                      List<Course> courses = await DatabaseService.getCourse();
                       showSpinner = false;
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => HomePage(courses: courses),
                         ),
                       );
                     }

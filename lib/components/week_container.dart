@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:database_project/components/course_container.dart';
 import 'package:database_project/model/course.dart';
 
-List<CourseContainer> getWeekData(String week, List<Course> lessons) {
-  List<CourseContainer> lessonContainers = [];
-  for (int index = 0; index < lessons.length; index++) {
-    if (lessons[index].week == week) {
-      lessonContainers.add(CourseContainer(course: lessons[index]));
+List<CourseContainer> getWeekData(String week, List<Course> courses) {
+  List<CourseContainer> courseContainers = [];
+  for (Course course in courses) {
+    if (course.week == week) {
+      courseContainers.add(
+        CourseContainer(course: course),
+      );
     }
   }
-  return lessonContainers;
+  return courseContainers;
 }
 
 class WeekContainer extends StatelessWidget {

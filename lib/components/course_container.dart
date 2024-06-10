@@ -18,7 +18,7 @@ class CourseContainer extends StatelessWidget {
       ),
       subtitle: Text(
         course.time.toString(),
-        style: TextStyle(color: Colors.grey.shade800),
+        style: TextStyle(color: Colors.grey.shade400),
       ),
       isThreeLine: true,
     );

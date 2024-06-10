@@ -9,16 +9,6 @@ import 'mock_data/course_mock.dart';
 void main() async {
   await DatabaseService.ensuredDatabaseActivate();
   runApp(const Assistant());
-  // await _instance.login(111016041, '2003lichyo');
-  // if (_instance.isUserLogin) {
-  //   // await _instance.writeCoursesIntoDatabase(
-  //   //     courses: MockCourse().chiyuCourses);
-  //   List<Course> courses = await _instance.getCourse();
-  //   for (Course course in courses) {
-  //     print(course.name);
-  //   }
-  // }
-  // print('Finished');
 }
 
 class Assistant extends StatelessWidget {
@@ -26,8 +16,9 @@ class Assistant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginPage(),
+    return MaterialApp(
+      theme: ThemeData.light(),
+      home: const LoginPage(),
     );
   }
 }
