@@ -27,7 +27,7 @@ teacher VARCHAR(100),
 week VARCHAR(50),
 time VARCHAR(50),
 classroom VARCHAR(100),
-CONSTRAINT unique_course UNIQUE (teacher, week, time)
+CONSTRAINT unique_course UNIQUE (teacher, week, time);
 );
 ```
 ```roomsql
@@ -36,7 +36,7 @@ st_id CHAR(9),
 course_id SERIAL NOT NULL,
 FOREIGN KEY (st_id) REFERENCES student(st_id),
 FOREIGN KEY (course_id) REFERENCES course(course_id),
-UNIQUE (st_id, course_id)
+UNIQUE (st_id, course_id);
 );
 ```
 ```roomsql
@@ -48,9 +48,19 @@ due_date TIMESTAMP,
 st_id VARCHAR(9) NOT NULL,
 course_id SERIAL NOT NULL,
 FOREIGN KEY (st_id) REFERENCES student(st_id),
-foreign key (course_id) references course(course_id)
+foreign key (course_id) references course(course_id);
 );
 ```
+```roomsql
+INSERT INTO student(st_id, st_name, department, email, password)
+VALUES(111016041, 'chi-yu', '資訊科學系', 'xxxxxx@gmail.com', 'xxxxxxxx');
+```
+```roomsql
+INSERT INTO student(st_id, st_name, department, email, password)
+VALUES(111016032, 'Yi-Tong', '資訊科學系', 'oooooo@gmail.com', 'xxxxxxxx');
+````
+
+
 then, in main() run below statements
 ```dart
 import 'package:flutter/material.dart';
