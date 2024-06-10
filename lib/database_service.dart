@@ -16,7 +16,7 @@ class DatabaseService {
       ID: ID,
       email: result[0][0] as String,
       department: result[0][1] as String,
-      name: result[02] as String,
+      name: result[0][2] as String,
     );
     if (_student != null) {
       _isUserLogin = true;
@@ -65,17 +65,6 @@ class DatabaseService {
   }
 
   Future<void> writeCoursesIntoDatabase({required List<Course> courses}) async {
-    // INSERT INTO course(course_name, teacher, week, time, classroom)
-    // VALUES ('工程數學', '王富祥', '四', '01~03', 'C631');
-    // courses = [];
-    // courses.add(
-    //   Course(
-    //       name: '工程數學',
-    //       teacher: '王富祥',
-    //       classroom: 'C631',
-    //       time: '01~03',
-    //       week: '四'),
-    // );
     for (Course course in courses) {
       _conn!.execute(
           "INSERT INTO course(course_name, teacher, week, time, classroom)"
