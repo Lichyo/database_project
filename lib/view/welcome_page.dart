@@ -99,7 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                     if (DatabaseService.isUserLogin) {
                       print('${DatabaseService.student!.name} is login');
                       List<Course> courses = await DatabaseService.getCourse();
-                      showSpinner = false;
+                      setState(() {
+                        showSpinner = false;
+                      });
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => HomePage(courses: courses),
