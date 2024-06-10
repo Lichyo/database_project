@@ -1,16 +1,93 @@
-# database_project
+# Database Project
+an App for students in NTUE.
+## Set Up
+make sure you follow the steps belows 
+### First Step
+In order to use this app,
+you have to lib/database_service.dart
+ensuredDatabaseActivate function to change username & password
+and make sure you have already download and create "database_project"
 
-project for postgre SQL demostration
+### Second Step
+In PostgreSQL doing the following queries :
+```roomsql
+CREATE TABLE student(
+st_id CHAR(9) PRIMARY KEY,
+st_name VARCHAR(50) NOT NULL,
+department VARCHAR(50) NOT NULL,
+email VARCHAR(250) UNIQUE NOT NULL,
+password VARCHAR(20) NOT NULL
+);
+```
+```roomsql
+CREATE TABLE course (
+course_id serial PRIMARY KEY,
+course_name VARCHAR(100),
+teacher VARCHAR(100),
+week VARCHAR(50),
+time VARCHAR(50),
+classroom VARCHAR(100),
+CONSTRAINT unique_course UNIQUE (teacher, week, time)
+);
+```
+```roomsql
+CREATE TABLE have (
+st_id CHAR(9),
+course_id SERIAL NOT NULL,
+FOREIGN KEY (st_id) REFERENCES student(st_id),
+FOREIGN KEY (course_id) REFERENCES course(course_id),
+UNIQUE (st_id, course_id)
+);
+```
+```roomsql
+CREATE TABLE note(
+note_id SERIAL PRIMARY KEY,
+subject VARCHAR(50) NOT NULL,
+content VARCHAR(2500),
+due_date TIMESTAMP,
+st_id VARCHAR(9) NOT NULL,
+course_id SERIAL NOT NULL,
+FOREIGN KEY (st_id) REFERENCES student(st_id),
+foreign key (course_id) references course(course_id)
+);
+```
+then, in main() run below statements
+```dart
+import 'package:flutter/material.dart';
+import 'view/welcome_page.dart';
+import 'database_service.dart';
+import 'mock_data/course_mock.dart';
 
-## Getting Started
+void main() async {
+  await DatabaseService.ensuredDatabaseActivate();
+  await DatabaseService.login(ID: 111016041, password: '2003lichyo');
+  await DatabaseService.writeCoursesIntoDatabase(courses: MockCourse().chiyuCourses);
+  await DatabaseService.login(ID: 111016032, password: 'qwasQWAS0924');
+  await DatabaseService.writeCoursesIntoDatabase(courses: MockCourse().yitongCourses);
+}
+```
+finally, change your main.dart into this
+```dart
+import 'package:flutter/material.dart';
+import 'view/welcome_page.dart';
+import 'database_service.dart';
+import 'mock_data/course_mock.dart';
 
-This project is a starting point for a Flutter application.
+void main() async {
+  await DatabaseService.ensuredDatabaseActivate();
+  runApp(const Assistant());
+}
 
-A few resources to get you started if this is your first Flutter project:
+class Assistant extends StatelessWidget {
+  const Assistant({super.key});
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const LoginPage(),
+    );
+  }
+}
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
