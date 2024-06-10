@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:database_project/model/note.dart';
+
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -41,48 +43,43 @@ class _NotePageState extends State<NotePage> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          title: RichText(
-                            text: TextSpan(
-                              text: '${notes[index].title}\n',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 30,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '${notes[index].content}\n',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: RichText(
+                          text: TextSpan(
+                            text: '${notes[index].title}\n',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '${notes[index].content}\n',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
                                 ),
-                              ],
-                            ),
-                          ),
-                          subtitle: Text(
-                            '${notes[index].time}',
-                            style: TextStyle(
-                              color: Colors.grey.shade800,
-                            ),
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              setState(() {
-                                deleteNote(index);
-                              });
-                            },
+                              ),
+                            ],
                           ),
                         ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              deleteNote(index);
+                            });
+                          },
+                        ),
                       ),
-                    );
-                  }),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

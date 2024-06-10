@@ -1,7 +1,7 @@
 import 'package:database_project/model/course.dart';
 import 'package:flutter/material.dart';
 import 'package:database_project/components/week_container.dart';
-import 'package:database_project/model/course.dart';
+import 'package:database_project/view/note_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.courses});
@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => NotePage(),
+                  builder: (context) => const NotePage();
                 ),
               );
             },
