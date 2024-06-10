@@ -1,17 +1,24 @@
+import 'package:database_project/model/course.dart';
+import 'package:database_project/view/homepage.dart';
+import 'package:flutter/material.dart';
+import 'view/welcome_page.dart';
 import 'database_service.dart';
+import 'package:provider/provider.dart';
 import 'mock_data/course_mock.dart';
 
 void main() async {
-  final DatabaseService _instance = DatabaseService();
-  await _instance.ensuredDatabaseActivate();
-  await _instance.login(111016032, 'qwasQWAS0924');
-  if (_instance.isUserLogin) {
-    // print(_instance.student!.ID);
-    // print(_instance.student!.name);
-    // print(_instance.student!.department);
-    // print(_instance.student!.email);
-    await _instance.writeCoursesIntoDatabase(courses: MockCourse().yitongCourses);
-  }
+  await DatabaseService.ensuredDatabaseActivate();
+  runApp(const Assistant());
+}
 
-  // print('Finished');
+class Assistant extends StatelessWidget {
+  const Assistant({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.light(),
+      home: const LoginPage(),
+    );
+  }
 }

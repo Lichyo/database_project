@@ -5,36 +5,41 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 class DatabaseService {
-  Connection? _conn;
-  bool isUserLogin = false;
-  Student? student;
+  static Connection? _conn;
+  static bool _isUserLogin = false;
 
-  Future<void> login(int ID, String password) async {
+  static bool get isUserLogin => _isUserLogin;
+  static Student? student;
+
+  static Future<void> login({required int ID, required String password}) async {
     final result = await _conn!.execute(
         "SELECT st_name, email, department FROM STUDENT WHERE st_id = '$ID' AND password = '$password';");
     student = Student(
       ID: ID,
-      email: result[0][0] as String,
-      department: result[0][1] as String,
-      name: result[0][2] as String,
+      name: result[0][0] as String,
+      email: result[0][1] as String,
+      department: result[0][2] as String,
     );
     if (student != null) {
-      isUserLogin = true;
+      _isUserLogin = true;
     }
   }
 
-  Future<List<Course>> getCourse() async {
+  static Future<List<Course>> getCourse() async {
     List<Course> courses = [];
     final result = await _conn!.execute(
-        'SELECT name, teacher, classroom, time, week FROM COURSE WHERE SID = ${student!.ID}');
+        "SELECT C.course_id, C.course_name, C.teacher, C.week, C.time, C.classroom FROM course C, have H "
+        "WHERE st_id = '${student!.ID}' AND H.course_id = C.course_id;");
     for (var course in result) {
-      String name = course[0] as String;
-      String teacher = course[1] as String;
-      String classroom = course[2] as String;
-      String time = course[3] as String;
-      String week = course[4] as String;
+      int ID = course[0] as int;
+      String name = course[1] as String;
+      String teacher = course[2] as String;
+      String week = course[3] as String;
+      String time = course[4] as String;
+      String classroom = course[5] as String;
       courses.add(
         Course(
+          ID: ID,
           name: name,
           teacher: teacher,
           classroom: classroom,
@@ -46,7 +51,7 @@ class DatabaseService {
     return courses;
   }
 
-  Future<void> ensuredDatabaseActivate() async {
+  static Future<void> ensuredDatabaseActivate() async {
     _conn = await Connection.open(
       Endpoint(
         host: 'localhost',
@@ -58,13 +63,14 @@ class DatabaseService {
     );
   }
 
-  Future<void> _getLessonFromWeb() async {
-    var courseFromWeb = await get(Uri.parse(
-        'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
-    var data = jsonDecode(courseFromWeb.body);
-  }
+  // Future<void> _getLessonFromWeb() async {
+  //   var courseFromWeb = await get(Uri.parse(
+  //       'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
+  //   var data = jsonDecode(courseFromWeb.body);
+  // }
 
-  Future<void> writeCoursesIntoDatabase({required List<Course> courses}) async {
+  static Future<void> writeCoursesIntoDatabase(
+      {required List<Course> courses}) async {
     int courseID = 0;
     for (Course course in courses) {
       var results = await _conn!.execute(
@@ -87,7 +93,7 @@ class DatabaseService {
     }
   }
 
-  Future<void> _bindingCoursesWithUser({required int courseID}) async {
+  static Future<void> _bindingCoursesWithUser({required int courseID}) async {
     _conn!.execute('INSERT INTO have(st_id, course_id)'
         'VALUES(${student!.ID}, $courseID)');
   }
