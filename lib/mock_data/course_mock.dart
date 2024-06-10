@@ -102,7 +102,7 @@ class MockCourse {
         teacher: '金克傑',
         classroom: 'C634',
         time: '05~06',
-        week: '一',
+        week: '三',
       ),
     );
     yitongCourses.add(

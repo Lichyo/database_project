@@ -1,8 +1,6 @@
 import 'package:postgres/postgres.dart';
 import 'model/course.dart';
 import 'model/student.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
 
 class DatabaseService {
   static Connection? _conn;
@@ -95,6 +93,7 @@ class DatabaseService {
 
   static Future<void> _bindingCoursesWithUser({required int courseID}) async {
     _conn!.execute('INSERT INTO have(st_id, course_id)'
-        'VALUES(${student!.ID}, $courseID)');
+        'VALUES(${student!.ID}, $courseID) '
+        'ON CONFLICT DO NOTHING');
   }
 }
