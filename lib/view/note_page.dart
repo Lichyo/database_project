@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:database_project/model/note.dart';
 
+
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
 
@@ -66,12 +67,6 @@ class _NotePageState extends State<NotePage> {
                             ],
                           ),
                         ),
-                        // subtitle: Text(
-                        //   '${notes[index].time}',
-                        //   style: TextStyle(
-                        //     color: Colors.grey.shade800,
-                        //   ),
-                        // ),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
