@@ -26,15 +26,18 @@ class DatabaseService {
   Future<List<Course>> getCourse() async {
     List<Course> courses = [];
     final result = await _conn!.execute(
-        'SELECT name, teacher, classroom, time, week FROM COURSE WHERE SID = ${student!.ID}');
+        "SELECT C.course_id, C.course_name, C.teacher, C.week, C.time, C.classroom FROM course C, have H "
+        "WHERE st_id = '${student!.ID}' AND H.course_id = C.course_id;");
     for (var course in result) {
-      String name = course[0] as String;
-      String teacher = course[1] as String;
-      String classroom = course[2] as String;
-      String time = course[3] as String;
-      String week = course[4] as String;
+      int ID = course[0] as int;
+      String name = course[1] as String;
+      String teacher = course[2] as String;
+      String week = course[3] as String;
+      String time = course[4] as String;
+      String classroom = course[5] as String;
       courses.add(
         Course(
+          ID: ID,
           name: name,
           teacher: teacher,
           classroom: classroom,
