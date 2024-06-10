@@ -55,7 +55,7 @@ class DatabaseService {
         host: 'localhost',
         database: 'database_project',
         username: 'postgres',
-        password: '2003Lichyo!',
+        password: '',
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
