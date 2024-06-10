@@ -16,7 +16,7 @@ class DatabaseService {
       ID: ID,
       email: result[0][0] as String,
       department: result[0][1] as String,
-      name: result[02] as String,
+      name: result[0][2] as String,
     );
     if (_student != null) {
       _isUserLogin = true;
@@ -58,9 +58,17 @@ class DatabaseService {
     );
   }
 
-  Future<void> getLessonFromWeb() async{
+  Future<void> _getLessonFromWeb() async {
     var courseFromWeb = await get(Uri.parse(
         'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
     var data = jsonDecode(courseFromWeb.body);
+  }
+
+  Future<void> writeCoursesIntoDatabase({required List<Course> courses}) async {
+    for (Course course in courses) {
+      _conn!.execute(
+          "INSERT INTO course(course_name, teacher, week, time, classroom)"
+          "VALUES ('${course.name}', '${course.teacher}', '${course.week}', '${course.time}', '${course.classroom}');");
+    }
   }
 }

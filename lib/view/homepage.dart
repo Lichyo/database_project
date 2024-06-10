@@ -1,57 +1,26 @@
 import 'package:database_project/model/course.dart';
 import 'package:flutter/material.dart';
-import 'package:database_project/components/lesson/week_container.dart';
-import 'package:database_project/db/lesson_database.dart';
-import 'package:database_project/models/lesson/lesson.dart';
-import 'package:database_project/models/lesson/lesson_controller.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
-import 'package:database_project/models/account/account.dart';
+import 'package:database_project/components/week_container.dart';
 
-class LessonPage extends StatefulWidget {
-  const LessonPage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<LessonPage> createState() => _LessonPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _LessonPageState extends State<LessonPage> {
+class _HomePageState extends State<HomePage> {
   bool isLoad = false;
   bool isNoData = false;
-  List<Course> lessons = [];
-
-  @override
-  void initState() {
-    super.initState();
-    refreshCurriculum();
-  }
+  List<Course> courses = [];
 
   bool isWeekHasData(String week) {
-    for (int index = 0; index < lessons.length; index++) {
-      if (lessons[index].week == week) {
+    for (int index = 0; index < courses.length; index++) {
+      if (courses[index].week == week) {
         return true;
       }
     }
     return false;
-  }
-
-  Future refreshCurriculum() async {
-    setState(() => isLoad = true);
-    final tempLessons = await LessonDatabase.instance.readAllLesson();
-    setState(() {
-      lessons = tempLessons;
-    });
-    if (lessons.isEmpty) {
-      await initCurriculum();
-      isNoData = lessons.isEmpty ? true : false;
-    }
-    setState(() => isLoad = false);
-  }
-
-  Future initCurriculum() async {
-    var lessonsFromWeb = await get(Uri.parse(
-        'http://100.76.56.129:5001?account=${111016041}&password=${'2003lichyo'}'));
-    var map = jsonDecode(lessonsFromWeb.body);
   }
 
   @override
@@ -87,15 +56,6 @@ class _LessonPageState extends State<LessonPage> {
                   ),
                 )
               : Scaffold(
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () async {
-                      setState(() {
-                        LessonDatabase.instance.deleteAllLesson();
-                        refreshCurriculum();
-                      });
-                    },
-                    child: const Icon(Icons.refresh),
-                  ),
                   body: ListView(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
@@ -106,25 +66,25 @@ class _LessonPageState extends State<LessonPage> {
                         children: [
                           Visibility(
                             visible: isWeekHasData('Mon'),
-                            child: WeekContainer(week: 'Mon', lessons: lessons),
+                            child: WeekContainer(week: 'Mon', courses: courses),
                           ),
                           Visibility(
                             visible: isWeekHasData('Tues'),
                             child:
-                                WeekContainer(week: 'Tues', lessons: lessons),
+                                WeekContainer(week: 'Tues', courses: courses),
                           ),
                           Visibility(
                             visible: isWeekHasData('Wed'),
-                            child: WeekContainer(week: 'Wed', lessons: lessons),
+                            child: WeekContainer(week: 'Wed', courses: courses),
                           ),
                           Visibility(
                             visible: isWeekHasData('Thur'),
                             child:
-                                WeekContainer(week: 'Thur', lessons: lessons),
+                                WeekContainer(week: 'Thur', courses: courses),
                           ),
                           Visibility(
                             visible: isWeekHasData('Fri'),
-                            child: WeekContainer(week: 'Fri', lessons: lessons),
+                            child: WeekContainer(week: 'Fri', courses: courses),
                           ),
                         ],
                       ),
